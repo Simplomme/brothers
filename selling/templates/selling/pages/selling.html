@@ -1,0 +1,225 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Poste de Vente
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+      <form class="selling-form selling-box" action="#" method="post" id="selling_form">
+        <fieldset>
+          <legend>Vendre un article</legend>
+
+            {% csrf_token %}
+            {{form.as_table}}
+
+          <input type="submit" name="" value="Ajouter">
+        </fieldset>
+      </form>
+
+      <div class="selling-facture selling-box">
+        <fieldset>
+          <legend>Facture</legend>
+          <table id="list">
+            <thead>
+              <tr>
+                <th>Supp.</th>
+                <th>Articles</th>
+                <th>Prix Unité</th>
+                <th>Quantité</th>
+                <th>Prix Brut</th>
+                <th>Remise</th>
+                <th>Prix Net</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </fieldset>
+        <div class="actions-btn">
+          <button type="button" id="save" style="background-color:green;">Enregistrer</button>
+          <button type="button"  id="cancel" style="background-color:red;">Annuler</button>
+        </div>
+      </div>
+
+  </div>
+{% endblock content%}
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function(){
+
+      $("#id_article_price").prop('readonly',true);
+      $("#id_qte_rest").prop('readonly',true);
+
+
+      $("#id_article_id").select2();
+
+      fetch_data();
+//=================================================================================
+      function getData(id,unity){
+        $.ajax({
+          url:"{% url 'selling:getData' %}",
+          method:"POST",
+          data:{
+              "csrfmiddlewaretoken": '{{ csrf_token }}',
+              "id":id,
+              "unity":unity,
+          },
+          success:function(data){
+            $("#id_article_price").val(data.article_price);
+            $("#id_qte_rest").val(data.qte_rest);
+          },
+          error:function(data){
+            alert(data.responseJSON.error);
+          }
+        });
+      }
+
+      function fetch_data(){
+        $.ajax({
+          url:"{% url 'selling:commandes'%}",
+          method:"POST",
+          data:{
+            "csrfmiddlewaretoken": '{{ csrf_token }}',
+          },
+          success:function(data){
+            $("#list tbody").html(data)
+          }
+        });
+      }
+
+      $("#id_article_id").on('change',function(){
+        var id =$(this).val();
+        var unity =$("#id_unity").val();
+        getData(id,unity);
+      });
+
+      $("#id_unity").on('change',function(){
+        var unity =$(this).val();
+        var id =$("#id_article_id").val();
+        getData(id,unity);
+      });
+
+//==============================SUBMIT EVENT===========================================
+      $("#selling_form").on('submit',function(event){
+        event.preventDefault();
+        if(parseFloat($("#id_qte_cmd").val())<0){
+          alert("La quantité demandée ne peut être négative");
+        }
+        else if(isNaN(parseFloat($("#id_qte_rest").val()))||isNaN(parseFloat($("#id_article_price").val()))){
+          alert("Cet article n'est pas disponible en "+$("#id_unity").find("option:selected").text());
+        }
+        else if(parseFloat($("#id_qte_cmd").val())>parseFloat($("#id_qte_rest").val())){
+          alert("La quantité demandée dépasse le stock restant");
+        }
+        else if(parseFloat($("#id_reduction").val())<0){
+          alert("La remise ne peut être négative");
+        }
+        else {
+          $.ajax({
+            url:"{% url 'selling:selling'%}",
+            method:"POST",
+            data:$(this).serialize(),
+            success:function(data){
+              fetch_data();
+              $("#selling_form")[0].reset();
+            },
+            error:function(data){
+              alert(data.responseJSON.error);
+            }
+          });
+        }
+      });
+
+//=========================DELETE EVENT===============================================
+      $(document).on('click','.delete',function(){
+        var id =$(this).data("id");
+        $.ajax({
+         url:"{% url 'selling:delete' %}",
+         method:"POST",
+         data:{
+           "csrfmiddlewaretoken": '{{ csrf_token }}',
+           "id":id,
+           "action":"fetch_data",
+         },
+         success:function(data){
+           if(confirm("Supprimer l'article "+data)){
+             $.ajax({
+              url:"{% url 'selling:delete' %}",
+              method:"POST",
+              data:{
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+                "id":id,
+                "action":"delete",
+              },
+              success:function(data){
+                alert(data);
+                fetch_data();
+              },
+              error:function(data){
+                alert(data.responseJSON.error);
+              }
+             });
+           }
+         },
+         error:function(data){
+           alert(data.responseJSON.error);
+         }
+        });
+      });
+
+//==============================SAVE==================================================
+      $("#save").on('click',function(){
+        var print =confirm("Imprimer le reçu ?");
+        $.ajax({
+          url:"{% url 'selling:save' %}",
+          method:"POST",
+          data:{
+            "csrfmiddlewaretoken":'{{csrf_token}}',
+            "action":"save",
+            "print":print,
+          },
+          success:function(data){
+            if(print){
+              var link =document.createElement('a');
+              link.href ="{% url 'selling:facturePDF'%}?date="+data.date+"&num="+data.num;
+              link.click();
+            }
+            else {
+              alert(data);
+            }
+            fetch_data();
+          },
+          error:function(data){
+            alert(data.responseJSON.error);
+          }
+        });
+      });
+
+//==============================CANCEL==================================================
+      $("#cancel").on('click',function(){
+        if(confirm("Annuler la facture en cours ?")){
+          $.ajax({
+            url:"{% url 'selling:cancel' %}",
+            method:"POST",
+            data:{
+              "csrfmiddlewaretoken":'{{csrf_token}}',
+            },
+            success:function(data){
+              fetch_data();
+            },
+            error:function(data){
+              alert(data.responseJSON.error);
+            }
+          });
+        }
+      });
+
+
+    })
+  </script>
+{% endblock script %}

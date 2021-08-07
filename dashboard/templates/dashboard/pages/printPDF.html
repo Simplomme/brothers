@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      body{
+        font-family:Times New Roman;
+        font-weight: bold;
+      }
+      .titre{
+        text-align:center;
+        text-decoration:underline;
+      }
+      table{
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,td{
+        text-align:center;
+        border: 1px solid black;
+      }
+      .lg{
+        text-align: center;
+        width:120px;
+      }
+      .lg h1{
+        font-family: algerian;
+        font-size: 16pt;
+        color: white;
+        background-color: rgba(0,0,0,0.2);
+        text-align: center;
+        width: 85px;
+        height: 85px;
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="lg">
+      <h1>ETS<br>FRERES<br>SAM</h1>
+      <span>Tel:98-10-41-18</span>
+    </div>
+    <h1 class="titre">{{title}} du {{start|date:'d/m/Y'}} au {{end|date:'d/m/Y'}}</h1>
+    <table>
+      <thead>
+        {% if sorties %}
+          <th>Articles</th>
+          <th>Date</th>
+          <th>Type opp</th>
+          <th>Prix unité</th>
+          <th>Quantité</th>
+          <th>Remise</th>
+          <th>Montant</th>
+        {% elif entrances %}
+          <th>Articles</th>
+          <th>Date</th>
+          <th>Type opp</th>
+          <th>Prix unité</th>
+          <th>Quantité</th>
+          <th>Montant</th>
+        {% elif pertes %}
+          <th>Articles</th>
+          <th>Date</th>
+          <th>Type opp</th>
+          <th>Prix unité</th>
+          <th>Quantité</th>
+          <th>Montant</th>
+        {% endif %}
+      </thead>
+      <tbody>
+        {% if sorties %}
+          {% for article in sorties %}
+            <tr>
+              <td>{{article.article_id}}</td>
+              <td>{{article.data_exit|date:'d/m/Y'}}</td>
+              <td>{{article.type_exit}}</td>
+              <td>{{article.selling_price}}</td>
+              <td>{{article.qte}}</td>
+              <td>{{article.discount}}</td>
+              <td>{{article.montant}}</td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td colspan="7">Historique vide</td>
+              </tr>
+          {% endfor %}
+        {% elif entrances %}
+          {% for article in entrances %}
+            <tr>
+              <td>{{article.article_id}}</td>
+              <td>{{article.date_entrance|date:'d/m/Y'}}</td>
+              <td>{{article.type_entrance}}</td>
+              <td>{{article.buying_price}}</td>
+              <td>{{article.qte}}</td>
+              <td>{{article.montant}}</td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6">Historique vide</td>
+              </tr>
+          {% endfor %}
+        {% elif pertes %}
+          {% for article in pertes %}
+            <tr>
+              <td>{{article.article_id}}</td>
+              <td>{{article.data_exit|date:'d/m/Y'}}</td>
+              <td>{{article.type_exit}}</td>
+              <td>{{article.selling_price}}</td>
+              <td>{{article.qte}}</td>
+              <td>{{article.profit}}</td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td colspan="7">Historique vide</td>
+              </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </body>
+</html>

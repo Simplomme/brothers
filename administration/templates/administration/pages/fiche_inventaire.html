@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    body{
+      font-family:Times New Roman;
+      font-weight: bold;
+    }
+    .titre{
+      text-align:center;
+      text-decoration:underline;
+    }
+    table{
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th,td{
+      text-align:center;
+      border: 1px solid black;
+    }
+    .lg{
+      text-align: center;
+      width:120px;
+    }
+    .lg h1{
+      font-family: algerian;
+      font-size: 16pt;
+      color: white;
+      background-color: rgba(0,0,0,0.2);
+      text-align: center;
+      width: 85px;
+      height: 85px;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 50%;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="lg">
+      <h1>ETS<br>FRERES<br>SAM</h1>
+      <span>Tel:98-10-41-18</span>
+    </div>
+    <h1 class="titre">FICHE D'INVENTAIRE <br> DU {{date|date:'d/m/Y'}}</h1>
+    <table>
+      <thead>
+        <th >Article</th>
+        <th >Qte théorique</th>
+        <th >Qte physique</th>
+      </thead>
+      <tbody>
+        {% for article in data %}
+          <tr>
+            <td>{{article.article_name}}</td>
+            <td>{{article.qte_stock}}</td>
+            <td></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

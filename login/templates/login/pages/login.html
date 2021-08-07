@@ -1,0 +1,36 @@
+{% extends 'layaouts/base.html'%}
+
+{% block title%}
+  Login
+{% endblock title%}
+
+{% block navbar%}
+<div class="menu">
+  <span class="logo"><span>ETS</span><span style="color:rgb(237, 127, 16);">FRERES</span> <span style="color:rgb(237, 127, 16);">SAM</span> </span>
+</div>
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <section class="login">
+
+      <div class="login-body">
+        <form class="form" action="{% url 'login:login' %}" method="post">
+          <img src="/static/image/avatar.png" alt=""/>
+          <h1 >Se connecter à votre compte</h1>
+          {% csrf_token %}
+          <div class="input-group">
+            {{form.username}}
+            {{form.username.label_tag}}
+          </div>
+          <div class="input-group">
+            {{form.password}}
+            {{form.password.label_tag}}
+          </div>
+          <em style="color:red;">{{error}}</em>
+          <input type="submit"  value="connecter" class="submit-btn">
+        </form>
+      </div>
+    </section>
+  </div>
+{% endblock content%}

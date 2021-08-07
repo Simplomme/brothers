@@ -1,0 +1,194 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Utilisateurs
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+      <div class="user-box">
+        <h1 class="banderole">Creer un nouveau utilisateur</h1>
+        <form class="" action="{% url 'administration:users' %}" method="post" id="user_form">
+          {% csrf_token %}
+            <tr>
+              <th>{{form.user_name.label}}</th>
+              <td>{{form.user_name}}</td>
+            </tr>
+            <tr>
+              <th>{{form.email.label}}</th>
+              <td>{{form.email}}</td>
+            </tr>
+            <tr>
+              <th>{{form.contact.label}}</th>
+              <td>{{form.contact}}</td>
+            </tr>
+            <tr>
+              <th>{{form.password.label}}</th>
+              <td>{{form.password}}</td>
+            </tr>
+            <tr>
+              <th><label id="new_passord_label">{{form.new_password.label}}</label></th>
+              <td>{{form.new_password}}</td>
+            </tr>
+            <tr>
+              <th>{{form.confirmation.label}}</th>
+              <td>{{form.confirmation}}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td><label for="">{{form.is_admin}} {{form.is_admin.label}}</label> </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>{{form.action}}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>{{form.hidden_id}}</td>
+            </tr>
+          <input type="submit" id="save" value="Creer">
+        </form>
+      </div>
+
+      <div class="user-box user-list">
+        <h1 class="banderole">Liste des utilisateurs</h1>
+        <table id="list">
+          <thead>
+            <tr>
+              <th>Nom utilisateur</th>
+              <th>Email</th>
+              <th>Contact</th>
+              <th>Administratteur</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+  </div>
+{% endblock content %}
+
+
+
+{% block script %}
+
+  <script>
+    $(document).ready(function(){
+      fetch_data();
+      $("#new_passord_label").hide();
+      $("#id_new_password").hide();
+ function fetch_data()
+ {
+  $.ajax({
+    data:{
+      "csrfmiddlewaretoken": '{{ csrf_token }}'
+    },
+   url:"{% url 'administration:usersList' %}",
+   method:"POST",
+   success:function(data)
+   {
+    $('#list tbody').html(data);
+   }
+  });
+ }
+//=======================SUBMIT EVENT=================================
+$("#user_form").on('submit',function(event){
+
+  event.preventDefault();
+  if(($("#id_action").val()=="add") &&($("#id_password").val()!=$("#id_confirmation").val())){
+    alert("Le mot de passe de confirmation doit être le même que le mot de passe");
+  }
+  else if(($("#id_action").val()=="edit") &&($("#id_new_password").val()!="")&&($("#id_new_password").val()!=$("#id_confirmation").val())){
+    alert("La confirmation du nouveau mot de passe n'est pas exacte");
+  }
+  else{
+    $.ajax({
+      url:"{% url 'administration:users' %}",
+      method:"POST",
+      data:$(this).serialize(),
+      success:function(data){
+        alert(data);
+        $("#user_form")[0].reset();
+        $("#id_action").val("add");
+        $("#id_hidden_id").val("");
+        $('#save').val('Ajouter');
+        $("#new_passord_label").hide();
+        $("#id_new_password").hide();
+        fetch_data();
+      },
+      error:function(data){
+        alert(data.responseJSON.error);
+      }
+    });
+  }
+});
+
+//================EDIT EVENT==================
+$(document).on('click','.edit',function(){
+  var id =$(this).data("id");
+  $.ajax({
+    url:"{% url 'administration:getUser' %}",
+    method:"POST",
+    data:{
+      "csrfmiddlewaretoken": '{{ csrf_token }}',
+      "id":id,
+    },
+    success:function(data){
+      $("#user_form")[0].reset();
+      $("#id_user_name").val(data.user_name);
+      $("#id_email").val(data.email);
+      $("#id_contact").val(data.contact);
+      if(data.is_admin) $("#id_is_admin").prop('checked', true);
+      $("#id_action").val("edit");
+      $("#id_hidden_id").val(id);
+      $('#save').val('Modifier');
+      $("#new_passord_label").show();
+      $("#id_new_password").show();
+    },
+    error:function(data){
+      alert(data.responseJSON.error);
+    }
+  });
+});
+
+//====================DELETE EVENT=============================
+$(document).on('click','.delete',function(){
+  var id =$(this).data("id");
+  $.ajax({
+   url:"{% url 'administration:getUser' %}",
+   method:"POST",
+   data:{
+     "csrfmiddlewaretoken": '{{ csrf_token }}',
+     "id":id,
+   },
+   success:function(data){
+     if(confirm("Supprimer l'utilisateur "+data.user_name)){
+       $.ajax({
+        url:"{% url 'administration:deleteUser' %}",
+        method:"POST",
+        data:{
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+          "id":id,
+        },
+        success:function(data){
+          alert(data);
+          fetch_data();
+        }
+       });
+     }
+   },
+   error:function(data){
+     alert(data.responseJSON.error);
+   }
+  });
+});
+
+    })
+  </script>
+{% endblock script %}

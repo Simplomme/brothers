@@ -1,0 +1,37 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Ajustement du stock
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div class="">
+      <h1 class="banderole">Ajuster le stock suite aux travaux d'inventaire</h1>
+      <form class="" action="{% url 'administration:execAjuster'%}" method="post">
+        {% csrf_token %}
+        <table class="ajuste">
+          <thead>
+            <th>Produits</th>
+            <th>Qte théorique</th>
+            <th>Qte physique</th>
+          </thead>
+          <tbody>
+            {% for a in articles %}
+              <tr>
+                <td>{{a.article_name}}</td>
+                <td>{{a.qte_stock}}</td>
+                <td><input type="number" name="{{a.id}}" value="" required></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <input type="submit" name="" value="Ajuster">
+      </form>
+      <em style="color:red;">N.B:Pour les produits qui se vendent en détail et en gros, les comptes doivent êtres fait  sur la base du détail</em>
+    </div>
+  </div>
+{% endblock content%}

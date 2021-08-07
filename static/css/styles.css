@@ -1,0 +1,439 @@
+@font-face {
+  font-family: legothick;
+  src: url('films.Legothick.ttf');
+}
+*{
+  margin: 0;
+  padding: 0;
+}
+a{
+  text-decoration: none;
+}
+body{
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+
+footer{
+  background-color:rgb(3, 34, 76);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    color: white;
+    font-family: cursive;
+    font-size: 15px;
+    padding-right:10px;
+}
+footer,.menu{
+  flex: none;
+}
+
+.menu{
+  width: 100vw;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: cursive;
+  background-color: rgb(3, 34, 76);
+}
+
+.menu ul{
+  color: white;
+  list-style: none;
+  flex-grow: 1;
+  display: flex;
+  align-items: baseline;
+  align-self: center;
+  padding: 0;
+  margin: 3px;
+}
+
+.menu a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.menu a:hover{
+  background-color: green;
+}
+
+.menu ul{
+  list-style: none;
+  display: flex;
+}
+
+.menu ul li{
+  position: relative;
+  width: 100%;
+}
+
+.menu ul ul{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background-color: rgb(3, 34, 76);;
+  width: 100%;
+}
+
+.menu ul ul  li{
+  display: none;
+  position: relative;
+}
+
+.menu ul ul  li a{
+  margin: 0;
+}
+
+.menu ul li:hover ul li{
+  top: 0;
+  display: block;
+}
+
+.logo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: rgb(3, 34, 76);
+  font-size: 22px;
+  font-family: legothick;
+  border-radius: 50%;
+  align-self: flex-start;
+  height: 100px;
+  width: 100px;
+
+}
+
+.logout{
+  background: white;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border:none;
+  font-family: legothick;
+  font-size: 16px;
+}
+
+.logout a{color: red;}
+.content{
+  display: flex;
+  height: 10px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+[class*='body']{
+  flex-grow: 1;
+}
+.side{
+  width:10%;
+}
+
+.login-body{
+  height: auto;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+.form{
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  padding: 80px 40px 40px;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 15px 25px rgba(3, 34, 76,0.5);
+}
+.form::before{
+  content: '';
+  position: absolute;
+  top:0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  pointer-events: none;
+}
+.form img{
+  position: absolute;
+  top: -40px;
+  left: 40%;
+  width: 100px;
+  border-radius: 50%;
+}
+.form h1{
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  color: #ff652f;
+}
+.form .input-group{
+  position: relative;
+}
+.form .input-group input{
+  width: 100%;
+  padding: 10px 0;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background-color: transparent;
+  color: inherit;
+}
+.form .input-group label{
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: .3s ease-out;
+}
+.form .input-group input:focus+label,.form .input-group input:valid+label{
+  transform: translateY(-18px);
+  color: #ff652f;
+  font-size: .8rem;
+}
+input[type="submit"]{
+  display: block;
+  margin-left: auto;
+  border: none;
+  background-color: #ff652f;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: auto;
+}
+
+
+.selling-form{
+  width: 30%;
+}
+
+.selling-form table input,.selling-form table select{
+  width: 100%;
+}
+
+.selling-form fieldset{
+  display: flex;
+  flex-direction: column;
+}
+
+.selling-form fieldset table th{
+  text-align: left;
+}
+
+.selling-box{
+  margin: 5px;
+  height: auto;
+}
+
+.selling-facture{
+  flex-grow: 1;
+  background-color: rgba(3, 34, 76,0.5);
+  padding: 5px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.selling-facture fieldset{
+  flex-grow:1;
+}
+
+.actions-btn{
+  align-self: flex-end;
+  width: 30%;
+  margin-bottom:2px;
+}
+.actions-btn button{
+  font-size: 1em;
+  font-family: cursive;
+  width: 120px;
+  height: 50px;
+  margin: 1%;
+  border: 1px solid rgb(250, 240, 230);
+  border-radius: 5px;
+  color: white;
+}
+td{
+  text-align: center;
+}
+fieldset{
+  padding: 2px;
+}
+legend{
+  font-size: 2em;
+}
+.dashboard-body{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.dashboard-body .date-start,.dashboard-body .date-end{
+  width: 35%;
+}
+.date-end button{
+  margin: 5px;
+}
+.dashboard-body article{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100px;
+  width: 35%;
+  border: 1px solid white;
+  text-align: center;
+}
+
+.dashboard-body article a {
+  background-color: rgba(255, 255, 255, 0.5);
+  font-size: 2em;
+  font-family: 'algerian';
+}
+
+.dashboard-body article span {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-size: 2em;
+  font-family: algerian;
+}
+
+.btn1{
+  background-color: rgb(225,128,128);
+}
+.btn2{background-color: rgb(255,201,14);}
+.btn3{background-color: rgb(34,177,76);}
+.btn4{background-color: rgb(181,230,29);}
+.btn5{background-color: rgb(128,128,0);}
+.btn6{background-color: rgb(239,228,176);}
+.btn7{background-color: rgb(225,0,0);}
+.btn8{background-color: rgb(225,128,128);}
+
+table{
+  width: 100%;
+}
+tr:nth-child(even){
+  background-color: lightgrey;
+}
+
+
+.banderole{
+  background-color: green;
+  color: white;
+}
+.articles-box{
+  margin: 5px;
+}
+.articles-list{
+  flex-grow: 1;
+}
+.articles-box form table input{
+  width: 100%;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(3, 34, 76,0.5);
+  padding: 3px;
+}
+.user-list{
+  flex-grow: 1;
+}
+.user-box{
+  margin: 5px;
+}
+
+.stock-list{
+  flex-grow: 1;
+}
+.stock-box{
+  margin: 5px;
+}
+
+.articles form table input{
+  width: 100%;
+
+}
+
+input,select{
+  height: 20px;
+}
+
+form input[type="submit"]{
+  align-self: flex-end;
+}
+
+.wl{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.wellecome{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(3, 34, 76,0.3);
+  padding: 5px;
+}
+
+.wellecome-title{
+  text-align: center;
+  color: #ff652f;
+  font-size: 2rem;
+  font-family:algerian;
+}
+
+
+.wellecome-body{
+  display: flex;
+  justify-content: space-around;
+}
+.wellecome-body h3{
+  color: white;
+}
+.wellecome a{
+  color: #ff652f;
+  font-size: 2rem;
+  text-align: right;
+  font-style: italic;
+}
+.wellecome .btn{
+  background-color: transparent;
+  border: 3px solid white;
+  border-radius: 5px;
+  width: 30%;
+  text-align: center;
+  align-self: flex-end;
+}
+
+.ajuste input[type="number"]{
+  width: 100%;
+  height: 100%;
+  display: inline;
+}
+.ajuste tr{
+  background-color: white;
+}

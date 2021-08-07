@@ -1,0 +1,45 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Reçu {{date}}/{{num}}
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div style="width:100%;">
+      <h1 class="banderole">Reçu {{date}}/{{num}}</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Articles</th>
+            <th>Prix Unité</th>
+            <th>Quantité</th>
+            <th>Prix Brut</th>
+            <th>Reductiuon</th>
+            <th>Prix Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for s in data %}
+            <tr>
+              <td>{{s.article_id}}</td>
+              <td>{{s.selling_price}}</td>
+              <td>{{s.qte}}</td>
+              <td>{{s.montant_brut}}</td>
+              <td>{{s.discount}}</td>
+              <td>{{s.montant}}</td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6">Aucun reçu ne correspond à votre demande</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p> <a href="{% url 'selling:facturePDF'%}?date={{date}}&num={{num}}">Imprimer</a> </p>
+    </div>
+  </div>
+{% endblock content%}

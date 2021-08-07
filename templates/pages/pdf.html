@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style >
+    @page{
+      size: a8 portrait;
+      margin: 0.5cm;
+    }
+    table{
+      width: 100%;
+    }
+      body{
+        font-family: Times;
+      }
+
+      .recu{
+        text-align: right;
+        padding-top: 0;
+      }
+
+      .recu-h td{
+        font-weight: bold;
+      }
+
+      .lg{
+        font-family: algerian;
+        font-size: 14pt;
+        color: white;
+        background-color: rgba(0,0,0,0.2);
+        text-align: center;
+        width: 75px;
+        height: 75px;
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 50%;
+      }
+
+      .recu h1{
+        display: inline;
+        text-decoration: underline;
+        text-decoration-style:double;
+        font-style: italic;
+        color: blue;
+      }
+
+
+      .recu-b{
+        border-collapse: collapse;
+        font-weight: bold;
+      }
+      .recu-b td,.recu-b th{
+        border: 1px solid black;
+        text-align: center;
+        vertical-align: middle;
+      }
+      footer{
+        position: absolute;
+        width: 100%;
+        text-align: right;
+        bottom: 0px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="recu-h">
+      <tr>
+        <td>
+          <h1 class="lg">ETS<br>FRERES<br>SAM</h1>
+          <span>Tel: 67890°789</span>
+        </td>
+
+        <td class="recu">
+          <h1>Reçu de vente</h1><br><br>
+          Date: 26/07/2021 <br><br>
+          N° 00786
+        </td>
+      </tr>
+    </table>
+    <br>
+    <hr with="100%"><br>
+    <table class="recu-b">
+      <thead>
+        <th >Qte</th>
+        <th >Produit/Désignation</th>
+        <th >Px Uni</th>
+        <th >Remise</th>
+        <th >Montant</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="3" style="border:none;"></td>
+          <td>Total</td>
+          <td>56557757</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer>
+      MERCI DE NOUS AVOIR CHOISIS ET À LA PROCHAINE
+    </footer>
+  </body>
+</html>

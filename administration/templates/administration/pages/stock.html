@@ -1,0 +1,105 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Nouveau stock
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+<div class="content">
+  <div class="stock-box">
+    <h1 class="banderole">Enregistrer un nouveau stock</h1>
+    <form class="" action="#" method="post" id="stock_form">
+      {% csrf_token %}
+      {{form.as_table}}
+      <input type="submit" value="Enregistrer">
+    </form>
+    <br><br>
+    <p style="width:100%;display:flex;justify-content:space-between;">
+      <a href="{% url 'administration:fiche' %}" style="color:red;">Fiche d'inventaire</a>
+      <a href="{% url 'administration:ajuster'%}" style="color:red;">Ajuster le stock</a>
+    </p>
+  </div>
+
+  <div class="stock-box stock-list">
+    <h1 class="banderole">Approvisionnement du jour</h1>
+    <table id="list">
+      <thead>
+        <th>Article</th>
+        <th>Type oppération</th>
+        <th>Prix d'achat</th>
+        <th>Quantité</th>
+        <th>Montant</th>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    fetch_data();
+    function fetch_data(){
+      $.ajax({
+        url:"{% url 'administration:getDayEntrance'%}",
+        method:"POST",
+        data:{
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        success:function(data){
+          $("#list tbody").html(data);
+        }
+      });
+    }
+
+    $("#id_article_id").select2();
+
+    $("#id_article_id").on('change',function(){
+      var id =$(this).val();
+        $.ajax({
+          url:"{% url 'administration:getArticle' %}",
+          method:"POST",
+          data:{
+            "csrfmiddlewaretoken": '{{ csrf_token }}',
+            "id":id,
+          },
+          success:function(data){
+            $("#id_buying_price").val(data.buying_price);
+            $("#id_retail_price").val(data.retail_price);
+            $("#id_wholesale_price").val(data.wholesale_price);
+            $("#id_basically_content").val(data.basically_content);
+          },
+      });
+    });
+
+    $("#stock_form").on('submit',function(event){
+      event.preventDefault();
+      if($("#id_retail_price").val()=="" && $("#id_wholesale_price").val()==""){
+        alert("Les prix de vente en détal et en gros ne peuvent tous deux êtres vides simultanement");
+      }
+      else if ($("#id_retail_price").val()!="" && $("#id_wholesale_price").val()!="" && $("#id_basically_content").val()==""){
+        alert("Le champ Gros ==> Détail ne peut être vide");
+      }
+      else{
+        $.ajax({
+          url:"{% url 'administration:stock' %}",
+          method:"POST",
+          data:$(this).serialize(),
+          success:function(data){
+            alert(data);
+            $("#stock_form")[0].reset();
+            fetch_data();
+          },
+      });
+      }
+    });
+  })
+</script>
+{% endblock script%}

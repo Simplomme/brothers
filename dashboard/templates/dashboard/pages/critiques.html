@@ -1,0 +1,36 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Tableau de bord
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div class="" style="width:30%;">
+      <h1 class="banderole">Articles en état critique</h1>
+      <table>
+        <thead>
+          <th>Articles</th>
+          <th>Qte rest</th>
+          <th>Qte min requise</th>
+        </thead>
+        <tbody>
+          {% for article in list %}
+            <tr>
+            <td>{{article.article_name}}</td>
+            <td>{{article.qte_stock}}</td>
+            <td>{{article.qte_min}}</td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3">Aucun article en état critique</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content%}

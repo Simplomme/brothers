@@ -1,0 +1,57 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Fiche journalière
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div class="dailylog-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Opération</th>
+            <th>N° ordre</th>
+            <th>Articles</th>
+            <th>Prix Unité</th>
+            <th>Quantité</th>
+            <th>Prix Brut</th>
+            <th>Reductiuon</th>
+            <th>Prix Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for s in sortie%}
+            <tr>
+              <td>{{s.type_exit}}</td>
+              <td> <a href="{% url 'selling:showFacture'%}?date={{date|date:'Y-m-d'}}&num={{s.num}}" style="color:blue;">{{s.num}}</a> </td>
+              <td>{{s.article_id}}</td>
+              <td>{{s.selling_price}}</td>
+              <td>{{s.qte}}</td>
+              <td>{{s.montant_brut}}</td>
+              <td>{{s.discount}}</td>
+              <td>{{s.montant}}</td>
+            </tr>
+          {% endfor %}
+          {%for s in entrance%}
+            <tr>
+              <td>{{s.type_entrance}}</td>
+              <td></td>
+              <td>{{s.article_id}}</td>
+              <td>{{s.buying_price}}</td>
+              <td>{{s.qte}}</td>
+              <td>{{s.montant}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br><br>
+      <p>
+        <a href="{% url 'selling:dailylogPDF' %}" style="color:red;">Imprimer</a>
+      </p>
+    </div>
+  </div>
+{% endblock content%}

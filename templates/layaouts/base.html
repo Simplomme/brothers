@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock%}</title>
+    <link rel="stylesheet" href="{% static 'css/all.css'%}">
+    <link rel="stylesheet" href="{% static 'css/select2.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    <script  src="{% static 'js/jquery-3.6.0.js' %}"></script>
+
+    <script  src="{% static 'js/select2.min.js'%}"></script>
+  </head>
+  <body>
+    {% block navbar %} {% endblock %}
+    {% block content %} {% endblock %}
+    {% include 'layaouts/footer.html'%}
+    {% block script %} {% endblock %}
+  </body>
+</html>

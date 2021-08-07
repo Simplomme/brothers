@@ -1,0 +1,72 @@
+{% extends 'layaouts/base.html'%}
+
+{% block title%}
+  Accueil
+{% endblock title%}
+
+{% block navbar%}
+<div class="menu">
+  <span class="logo"><span>ETS</span><span style="color:rgb(237, 127, 16);">FRERES</span> <span style="color:rgb(237, 127, 16);">SAM</span> </span>
+</div>
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div class="wl">
+      <section class="wellecome">
+        <h1 class="wellecome-title">Bienvenu chez les frères SAM</h1>
+        <p>Chez les Frères SAM c'est une allimentation générale.</p>
+        <div class="wellecome-body">
+          <div class="">
+            <h3>Produits congelés</h3>
+            <ul>
+              <li>Poulets:
+                <ul>
+                  <li>Ailes</li>
+                  <li>Cuisses</li>
+                  <li>Gésier</li>
+                  <li>Poulet entier</li>
+                  <li>Poulet local</li>
+                </ul>
+              </li>
+              <li>Poissons:
+                <ul>
+                  <li>20+</li>
+                  <li>25+</li>
+                </ul>
+              </li>
+              <li>Autres:
+                <ul>
+                  <li>Saucisses</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="">
+            <h3>Produits allimentaires</h3>
+            <ul>
+              <li>Boîtes de conserve:
+                <ul>
+                  <li>Tomate</li>
+                  <li>Sardine</li>
+                  <li>Lait</li>
+                </ul>
+              </li>
+              <li>Les pâtes:
+                <ul>
+                  <li>Spaghetti</li>
+                  <li>Spaghetti</li>
+                  <li>Spaghetti</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <i>Chez les frères SAM c'est aussi un point de navigation avec une connexion internet rapide. </i>
+        <div class="btn"><a href="{% url 'login:login'%}">Se connecter</a></div>
+        <!-- <a href="/print/">Imprimer</a><nav -->
+
+      </section>
+    </div>
+  </div>
+{% endblock%}

@@ -1,0 +1,176 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Articles
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+<div class="content">
+  <div class="articles-box">
+    <h1 class="banderole">Ajouter un nouveau article</h1>
+    <form class="" action="{% url 'administration:articles'%}" method="post" id="article_form">
+      {% csrf_token %}
+        {% for field in form %}
+          {% if forloop.first %}
+            <tr>
+              <td></td>
+              <td>{{field}}</td>
+            </tr>
+          {% elif forloop.last %}
+            <tr>
+              <td></td>
+              <td>{{field}}</td>
+            </tr>
+          {% else %}
+            <td>{{field.label}}</td>
+            <td>{{field}}</td>
+          {% endif %}
+        {% endfor %}
+      <input type="submit" value="Ajouter" id="save">
+    </form>
+    </div>
+    <div class="articles-list articles-box">
+      <h1 class="banderole">Liste des articles</h1>
+      <table id="list">
+        <thead>
+          <th>Article</th>
+          <th>Prix d'achat</th>
+          <th>Prix vente détail</th>
+          <th>Prix vente gros </th>
+          <th>Gros ==> Détail</th>
+          <th>Stock</th>
+          <th>Qte min</th>
+          <th></th>
+          <th></th>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+    fetch_data();
+
+    function fetch_data(){
+      $.ajax({
+        url:"{% url 'administration:articlesListe'%}",
+        method:"POST",
+        data:{
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        success:function(data){
+          $("#list tbody").html(data)
+        }
+      });
+    }
+//====================SUBMIT EVENT=============================
+    $("#article_form").on("submit",function(event){
+      event.preventDefault();
+      if($("#id_retail_price").val()=="" && $("#id_wholesale_price").val()==""){
+        alert("Les prix vente en détal et en gros ne peuvent tous deux êtres vides simultanement");
+      }
+      else if ($("#id_retail_price").val()!="" && $("#id_wholesale_price").val()!="" && $("#id_basically_content").val()==""){
+        alert("Le champ Gros ==> Détail ne peut être vide");
+      }
+      else{
+        $.ajax({
+          url:"{% url 'administration:articles'%}",
+          method:"POST",
+          data:$(this).serialize(),
+          success:function(data){
+            alert(data);
+            $("#article_form")[0].reset();
+            $("#id_buying_price").prop("readonly",false);
+            $("#id_qte_stock").prop("readonly",false);
+            $("#id_action").val("add");
+            $("#id_hidden_id").val("");
+            $('#save').val('Ajouter');
+            fetch_data();
+          },
+          error:function(data){
+            alert(data.responseJSON.error);
+          }
+        });
+      }
+    });
+
+//====================EDIT EVENT=============================
+
+    $(document).on('click','.edit',function(){
+      var id =$(this).data("id");
+      $.ajax({
+        url:"{% url 'administration:getArticle' %}",
+        method:"POST",
+        data:{
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+          "id":id,
+        },
+        success:function(data){
+          $("#article_form")[0].reset();
+          $("#id_article_name").val(data.article_name);
+          $("#id_buying_price").val(data.buying_price);
+          $("#id_retail_price").val(data.retail_price);
+          $("#id_wholesale_price").val(data.wholesale_price);
+          $("#id_basically_content").val(data.basically_content);
+          $("#id_qte_stock").val(data.qte_stock);
+          $("#id_qte_min").val(data.qte_min);
+
+          $("#id_action").val("edit");
+          $("#id_hidden_id").val(id);
+          $('#save').val('Modifier');
+          $("#id_buying_price").prop("readonly",true);
+          $("#id_qte_stock").prop("readonly",true);
+        },
+        error:function(data){
+          alert(data.responseJSON.error);
+        }
+      });
+    });
+
+    //====================DELETE EVENT=============================
+    $(document).on('click','.delete',function(){
+      var id =$(this).data("id");
+      $.ajax({
+       url:"{% url 'administration:getArticle' %}",
+       method:"POST",
+       data:{
+         "csrfmiddlewaretoken": '{{ csrf_token }}',
+         "id":id,
+       },
+       success:function(data){
+         if(confirm("Supprimer l'article "+data.article_name)){
+           $.ajax({
+            url:"{% url 'administration:deleteArticle' %}",
+            method:"POST",
+            data:{
+              "csrfmiddlewaretoken": '{{ csrf_token }}',
+              "id":id,
+            },
+            success:function(data){
+              alert(data);
+              fetch_data();
+            },
+            error:function(data){
+              alert(data.responseJSON.error);
+            }
+           });
+         }
+       },
+       error:function(data){
+         alert(data.responseJSON.error);
+       }
+      });
+    });
+
+  })
+
+</script>
+{% endblock script%}

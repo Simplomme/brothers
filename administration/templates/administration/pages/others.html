@@ -1,0 +1,75 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Autres dépenses
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div class="">
+      <h1 class="banderole">Enregistrer d'autres d'dépenses</h1>
+      <form class="" action="#" method="post" id="others">
+        {% csrf_token %}
+        {{form.as_table}}
+        <input type="submit"  value="Enregistrer">
+      </form>
+      <br>
+    <div class="">
+      <h1 class="banderole">Liste de vos dépenses</h1>
+      <table id="list">
+        <thead>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Montant</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+{% endblock content%}
+
+{% block script %}
+  <script>
+    $(document).ready(function(){
+
+      fetch_data()
+
+      function fetch_data()
+      {
+       $.ajax({
+         data:{
+           "csrfmiddlewaretoken": '{{ csrf_token }}'
+         },
+        url:"{% url 'administration:othersList' %}",
+        method:"POST",
+        success:function(data)
+        {
+         $('#list tbody').html(data);
+        }
+       });
+      }
+
+      $("#others").on('submit',function(event){
+        event.preventDefault()
+        $.ajax({
+          url:"{% url 'administration:others'%}",
+          method:"POST",
+          data:$(this).serialize(),
+          success:function(data){
+            fetch_data();
+            $("#others")[0].reset();
+          },
+          error:function(data){
+            alert(data.responseJSON.error);
+          }
+        });
+      });
+    })
+  </script>
+{% endblock script%}

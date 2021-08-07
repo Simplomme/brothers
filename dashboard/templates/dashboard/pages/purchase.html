@@ -1,0 +1,44 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Tableau de bord
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+<div class="content">
+  <div class="">
+    <h1 class="banderole">Les achats du {{start|date:'d/m/Y'}} au {{end|date:'d/m/Y'}} </h1>
+    <table>
+      <thead>
+        <th>Articles</th>
+        <th>Date</th>
+        <th>Type opp</th>
+        <th>Prix unité</th>
+        <th>Quantité</th>
+        <th>Montant</th>
+      </thead>
+      <tbody>
+        {% for article in articles %}
+          <tr>
+            <td>{{article.article_id}}</td>
+            <td>{{article.date_entrance|date:'d/m/Y'}}</td>
+            <td>{{article.type_entrance}}</td>
+            <td>{{article.buying_price}}</td>
+            <td>{{article.qte}}</td>
+            <td>{{article.montant}}</td>
+          </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6">Historique vide</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br><br>
+    <p><a href="{% url 'dashboard:purchasePDF' %}?start={{start|date:'Y-m-d'}}&end={{end|date:'Y-m-d'}}" style="color:red;">Imprimer</a></p>
+  </div>
+</div>
+{% endblock content%}

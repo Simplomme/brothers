@@ -1,0 +1,19 @@
+<div class="menu">
+  <span class="logo"><span>ETS</span><span style="color:rgb(237, 127, 16);">FRERES</span> <span style="color:rgb(237, 127, 16);">SAM</span> </span>
+  <ul>
+    <li><a href="{% url 'selling:selling'%}" id="sell">Vendre</a></li>
+    <li><a href="{% url 'selling:dailylog'%}">Fiche journalière</a></li>
+    <li><a href="{% url 'dashboard:dashboard'%}">Tableau de bord</a></li>
+    {% if isAdmin %}
+    <li> <a href="#">Administration</a>
+      <ul>
+        <li><a href="{% url 'administration:articles' %}">Articles</a></li>
+        <li><a href="{% url 'administration:stock' %}">Nouveau stock</a></li>
+        <li><a href="{% url 'administration:users' %}">Utilisateurs</a></li>
+        <li><a href="{% url 'administration:others'%}">Autres</a></li>
+      </ul>
+    </li>
+    {% endif %}
+  </ul>
+  <button type="button" class="logout"><a href="{% url 'login:logout' %}">DECONNECTER</a></button>
+</div>

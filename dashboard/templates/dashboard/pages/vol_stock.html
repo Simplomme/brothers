@@ -1,0 +1,30 @@
+{% extends 'layaouts/base.html'%}
+{% block title%}
+  Tableau de bord
+{% endblock title%}
+
+{% block navbar%}
+  {% include 'layaouts/header.html'%}
+{% endblock navbar%}
+
+{% block content%}
+  <div class="content">
+    <div class="" style="width:30%;">
+      <h1 class="banderole">Volume du stock</h1>
+      <table>
+        <thead>
+          <th>Articles</th>
+          <th>Quantité</th>
+        </thead>
+        <tbody>
+          {% for article in stock %}
+            <tr>
+            <td>{{article.article_name}}</td>
+            <td>{{article.qte_stock}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content%}
